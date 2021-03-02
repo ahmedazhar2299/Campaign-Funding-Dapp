@@ -225,7 +225,21 @@ const adoptSlice = createSlice({
             console.log("leave pet fulfil state = ", state);
             console.log("leave pet fulfil action = ", action);
             state.adopters[action.payload.petIndex] = '0x0000000000000000000000000000000000000000';
-        }
+            state.adoptInProgress = false;
+        },
+        [leavePet.pending]: (state,action)=>{
+            console.log("adopt pet pending state = ", state);
+            console.log("adopt pet pending action = ", action);
+            state.adoptInProgress = true;
+        },
+        [leavePet.rejected]: (state,action)=>{
+            console.log("adopt pet rejected state = ", state);
+            console.log("adopt pet rejected action = ", action);
+            state.adoptErrorMessage = action.error.message;
+            state.adoptError = true;
+            state.adoptInProgress = false;
+            console.log("Error Message = ", action.error.message)
+        },
         
     }
 })

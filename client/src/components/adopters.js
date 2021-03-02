@@ -1,7 +1,4 @@
-// import { getDefaultMiddleware } from '@reduxjs/toolkit';
-// import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-// import { loadAdopters } from '../store/adoptSlice';
 
 function Adoptors() {
 
@@ -14,9 +11,9 @@ function Adoptors() {
             <div>Adopters List:</div>
             <div>
                 {
-                    adoptersList.map((list,index) => (
-                        
-                        list != "0x0000000000000000000000000000000000000000" ? <div key={index}> Index = {index} - {list} </div> : null
+                    adoptersList.map((list, index) => (
+
+                        list !== "0x0000000000000000000000000000000000000000" ? <div key={index}> Index = {index} - {list} </div> : null
                     ))
                 }
             </div>

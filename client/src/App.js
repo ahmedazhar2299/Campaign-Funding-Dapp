@@ -1,10 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
-import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
 import { initWeb3 } from './store/adoptSlice';
-import { loadAdopters } from './store/adoptSlice';
-
 import PetList from './components/petList.js';
 
 function App() {
@@ -13,7 +10,11 @@ function App() {
 
   useEffect(()=>{
     dispatch(initWeb3());
-  },[]);
+  });
+
+  setInterval(function(){
+    dispatch(initWeb3());
+  }, 2000);
 
   return (
     <div>

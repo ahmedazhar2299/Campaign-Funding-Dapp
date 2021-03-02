@@ -1,32 +1,27 @@
-// import { getDefaultMiddleware } from '@reduxjs/toolkit';
-// import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-//import { loadAdopters } from '../store/adoptSlice';
 import petListJson from '../pets.json';
 import Adoptors from './adopters.js';
-import { loadAdopters, initWeb3, adoptPet, leavePet } from '../store/adoptSlice';
+import { adoptPet, leavePet } from '../store/adoptSlice';
 import loadingImage from '../loading.gif';
 
 function PetList() {
 
     const dispatch = useDispatch();
 
-    const contract = useSelector((state) => {
-        return state.adoptReducer.contract;
-    });
-    
     const { address, adopters, adoptInProgress, adoptErrorMessage, adoptError } = useSelector((state) => {
         return state.adoptReducer
     })
-    
+
     return (
         <div>
             <div>
-                Hello PetList - Address: {address}
+                GitHub: <a href="https://github.com/Shamsyum">@shamsyum</a>
+                <h1 style={{marginTop: '-10px'}}>pet-shop dapp by shams  </h1> 
+                Connected wallet Address: {address} <br/><br/>
             </div>
             <Adoptors />
             <div>
-                {adoptInProgress ? <img src={loadingImage} style={{ width: '200px', height: '100px' }} /> : null}
+                {adoptInProgress ? <img src={loadingImage} alt="Loading" style={{ width: '200px', height: '100px' }} /> : null}
             </div>
             <div>
                 {adoptError ? <div style={{ color: 'red' }}>{adoptErrorMessage}</div> : null}
@@ -52,15 +47,12 @@ function PetList() {
 
                             <div>
                                 {
-                                    adopters[item.id] == "0x0000000000000000000000000000000000000000" ?
+                                    adopters[item.id] === "0x0000000000000000000000000000000000000000" ?
                                         <button type="button" onClick={
                                             async () => {
                                                 dispatch(adoptPet(item.id));
                                                 // console.log("clicked id: ", item.id);
-                                                // const result = await contract.methods.adopt(item.id).send({ from: address });
-
-                                                // adopted();
-
+                                                // const result = await contract.methods.adopt(item.id).send({ from: address })
                                             }
                                         }
                                         >Adopt</button> :
@@ -74,7 +66,6 @@ function PetList() {
                                                 }
                                             }
                                             >LeavePet</button>
-
                                         </div>
                                 }
                             </div>
