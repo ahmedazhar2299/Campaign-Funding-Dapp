@@ -15,9 +15,10 @@ contract Adoption {
         return adopters;
     }
 
-    function leaveAdopt(uint petId) public returns(uint) {
-        require(adopters[petId] == msg.sender, 'Adoption: Not The Owner');
+    function leave(uint petId) public returns(uint) {
+        require(adopters[petId] == msg.sender, 'Caller is Not The Owner');
         adopters[petId] = address(0);
         return petId;
     }
 }
+//comment

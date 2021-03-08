@@ -49,6 +49,15 @@ export const loadAdopters = createAsyncThunk(
     }
 )
 
+export const loadAdoptersList = createAsyncThunk(
+    "LoadList",
+    async(a,thunkAPI)=>{
+        const contract = thunkAPI.getState().adoptReducer.contract;
+        const list = await contract.methods.getAdopters().call();
+        return list;
+    }
+)
+
 export const adoptPet = createAsyncThunk(
     "adoptPet",
     async(petIndex,thunkAPI)=>{
@@ -64,7 +73,7 @@ export const adoptPet = createAsyncThunk(
 
         return {
             adopterAddress: result.from,
-            petIndex: petIndex
+            petIndex: petIndex,
         }
         
     }
@@ -80,17 +89,16 @@ export const leavePet = createAsyncThunk(
         const contract = thunkAPI.getState().adoptReducer.contract;
         const address = thunkAPI.getState().adoptReducer.address;
 
-        const result = await contract.methods.leaveAdopt(petIndex).send({ from: address });
+        const result = await contract.methods.leave(petIndex).send({ from: address });
         console.log("after adopt result = ", result);
 
         return {
             //adopterAddress: result.from,
-            petIndex: petIndex
+            petIndex: petIndex,
         }
         
     }
 )
-
 
 const adoptSlice = createSlice({
     name: "AdopSlice",
@@ -102,6 +110,7 @@ const adoptSlice = createSlice({
         adoptInProgress: false,
         adoptErrorMessage: "",
         adoptError: false,
+        petInd: 0,
      },
     reducers: {
         adopt: ()=>{
@@ -119,19 +128,23 @@ const adoptSlice = createSlice({
         },
         [loadAdopters.fulfilled]: (state,action)=>{
             state.adopters = action.payload
+            console.log("adopters = ", action.payload);
         },
-
+        [loadAdoptersList.fulfilled]: (state,action)=>{
+            state.adopters = action.payload
+            console.log("adopters = ", action.payload);
+        },
         [adoptPet.fulfilled]: (state,action)=>{
             console.log("adopt pet fulfil state = ", state);            
             console.log("adopt pet fulfil action = ", action);
             state.adopters[action.payload.petIndex] = action.payload.adopterAddress
             state.adoptInProgress = false;
-            
         },
         [adoptPet.pending]: (state,action)=>{
             console.log("adopt pet pending state = ", state);
             console.log("adopt pet pending action = ", action);
             state.adoptInProgress = true;
+            //state.petInd = action.payload.petIndex;
         },
         [adoptPet.rejected]: (state,action)=>{
             console.log("adopt pet rejected state = ", state);
@@ -152,6 +165,7 @@ const adoptSlice = createSlice({
             console.log("adopt pet pending state = ", state);
             console.log("adopt pet pending action = ", action);
             state.adoptInProgress = true;
+            //state.petInd = action.payload.petIndex;
         },
         [leavePet.rejected]: (state,action)=>{
             console.log("adopt pet rejected state = ", state);

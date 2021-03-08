@@ -8,7 +8,7 @@ function PetList() {
 
     const dispatch = useDispatch();
 
-    const { address, adopters, adoptInProgress, adoptErrorMessage, adoptError } = useSelector((state) => {
+    const { address, adopters, adoptInProgress, adoptErrorMessage, adoptError, petInd } = useSelector((state) => {
         return state.adoptReducer
     })
 
@@ -16,15 +16,16 @@ function PetList() {
         <div>
             <div>
                 GitHub: <a href="https://github.com/Shamsyum">@shamsyum</a>
-                <h1 style={{marginTop: '-10px'}}>pet-shop dapp by shams  </h1> 
-                Connected wallet Address: {address} <br/><br/>
+                <div>Network: Ropsten</div>
+                <h1 style={{ marginTop: '-10px' }}>pet-shop dapp by shams  </h1>
+                Connected wallet: {address} <br /><br />
             </div>
             <Adoptors />
-            <div>
-                {adoptInProgress ? <img src={loadingImage} alt="Loading" style={{ width: '200px', height: '100px' }} /> : null}
+            <div> <br />
+                {adoptError ? <div style={{ color: 'red' }}>{adoptErrorMessage}</div> : null}
             </div>
             <div>
-                {adoptError ? <div style={{ color: 'red' }}>{adoptErrorMessage}</div> : null}
+                {adoptInProgress ? <img src={loadingImage} alt="Loading" style={{ width: '200px', height: '100px' }} /> : null}
             </div>
             <br />
             {
@@ -43,9 +44,8 @@ function PetList() {
                             <strong>Age</strong>: <span>{item.age}</span><br />
                             <strong>Location</strong>: <span>{item.location}</span><br /><br />
 
-
-
                             <div>
+
                                 {
                                     adopters[item.id] === "0x0000000000000000000000000000000000000000" ?
                                         <button type="button" onClick={
@@ -56,18 +56,23 @@ function PetList() {
                                             }
                                         }
                                         >Adopt</button> :
-
-                                        <div>
-                                            <button type="button" disabled style={{ marginRight: '10px' }}>Adopted</button>
-
-                                            <button type="button" onClick={
-                                                async () => {
-                                                    dispatch(leavePet(item.id));
+                                        adopters[item.id] === address ?
+                                            <div>
+                                                <button type="button" disabled style={{ marginRight: '10px' }}>Adopted</button>
+                                                <button type="button" onClick={
+                                                    async () => {
+                                                        dispatch(leavePet(item.id));
+                                                    }
                                                 }
-                                            }
-                                            >LeavePet</button>
-                                        </div>
+                                                >Leave</button>
+                                            </div> :
+                                            <div>
+                                                <button type="button" disabled style={{ marginRight: '10px' }}>Adopted</button>
+                                            </div>
                                 }
+                                {/* <div>
+                                    {(adoptInProgress && petInd === item.id) ? <img src={loadingImage} alt="Loading" style={{ width: '200px', height: '100px' }} /> : null}
+                                </div> */}
                             </div>
                         </div>
                     </div>

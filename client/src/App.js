@@ -1,7 +1,7 @@
 import './App.css';
 import {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import { initWeb3 } from './store/adoptSlice';
+import { initWeb3, loadAdoptersList } from './store/adoptSlice';
 import PetList from './components/petList.js';
 
 function App() {
@@ -10,16 +10,16 @@ function App() {
 
   useEffect(()=>{
     dispatch(initWeb3());
-  });
+  },[]);
 
-  setInterval(function(){
-    dispatch(initWeb3());
+  setInterval(()=>{
+    dispatch(loadAdoptersList());
   }, 2000);
 
   return (
     <div>
       <PetList />
-    </div>
+    </div> 
   );
 }
 
