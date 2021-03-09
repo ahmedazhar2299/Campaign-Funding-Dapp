@@ -10,7 +10,7 @@ function App() {
 
   useEffect(()=>{
     dispatch(initWeb3());
-  },[]);
+  });
 
   setInterval(()=>{
     dispatch(loadAdoptersList());

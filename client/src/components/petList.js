@@ -8,7 +8,7 @@ function PetList() {
 
     const dispatch = useDispatch();
 
-    const { address, adopters, adoptInProgress, adoptErrorMessage, adoptError, petInd } = useSelector((state) => {
+    const { address, adopters, adoptInProgress, adoptErrorMessage, adoptError } = useSelector((state) => {
         return state.adoptReducer
     })
 
