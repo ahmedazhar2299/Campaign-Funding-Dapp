@@ -1,7 +1,7 @@
 import React from "react";
 import Identicons from "react-identicons";
 import { FaEthereum } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Projects = () => {
   const itemsList = [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4];
@@ -15,9 +15,10 @@ const Projects = () => {
 };
 
 const ProjectItem = (e) => {
+  const navigate = useNavigate();
   return (
-    <Link
-      to={"/project/1"}
+    <div
+      onClick={() => navigate("/project/1")}
       className="cursor-pointer border rounded-lg shadow-lg hover:scale-105 "
     >
       <div className="h-64 w-56 overflow-hidden rounded-lg">
@@ -50,7 +51,7 @@ const ProjectItem = (e) => {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

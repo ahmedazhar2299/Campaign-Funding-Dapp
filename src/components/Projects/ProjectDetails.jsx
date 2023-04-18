@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Identicons from "react-identicons";
 import { FaEthereum } from "react-icons/fa";
 import ProjectBackers from "./ProjectBackers";
+import CreateProject from "./CreateProject";
+import DeleteProject from "./DeleteProject";
+import BackProject from "./BackProject";
 
 const ProjectDetails = () => {
+  const [openProject, setOpenProject] = useState({
+    update: false,
+    delete: false,
+    back: false,
+  });
+
   return (
     <div className="mt-24 lg:mx-40 md:mx-16 mx-10 ">
       <div className="flex flex-col md:flex-row gap-5">
@@ -49,18 +58,64 @@ const ProjectDetails = () => {
         </div>
       </div>
       <div className="mt-10 w-full whitespace-nowrap flex gap-2 justify-center">
-        <button className="px-4 py-2 bg-green-500 hover:bg-green-700 text-xs text-white uppercase rounded-full">
+        <button
+          onClick={() =>
+            setOpenProject((e) => {
+              return { ...e, back: true };
+            })
+          }
+          className="px-4 py-2 bg-green-500 hover:bg-green-700 text-xs text-white uppercase rounded-full"
+        >
           Back Project
         </button>
-        <button className="px-4 py-2 bg-stone-500 hover:bg-stone-700 text-xs text-white uppercase rounded-full">
+        <button
+          onClick={() =>
+            setOpenProject((e) => {
+              return { ...e, update: true };
+            })
+          }
+          className="px-4 py-2 bg-stone-500 hover:bg-stone-700 text-xs text-white uppercase rounded-full"
+        >
           Edit
         </button>
-        <button className="px-4 py-2 bg-red-500 hover:bg-red-700 text-xs text-white uppercase rounded-full">
+        <button
+          onClick={() =>
+            setOpenProject((e) => {
+              return { ...e, delete: true };
+            })
+          }
+          className="px-4 py-2 bg-red-500 hover:bg-red-700 text-xs text-white uppercase rounded-full"
+        >
           Delete
         </button>
         <button className="px-4 py-2 bg-orange-500 hover:bg-orange-700 text-xs text-white uppercase rounded-full">
           Payout
         </button>
+        <CreateProject
+          Operation={"Update"}
+          setOpen={openProject.update}
+          setClose={() =>
+            setOpenProject((e) => {
+              return { ...e, update: false };
+            })
+          }
+        />
+        <DeleteProject
+          setOpen={openProject.delete}
+          setClose={() =>
+            setOpenProject((e) => {
+              return { ...e, delete: false };
+            })
+          }
+        />
+        <BackProject
+          setOpen={openProject.back}
+          setClose={() =>
+            setOpenProject((e) => {
+              return { ...e, back: false };
+            })
+          }
+        />
       </div>
       <div>
         <ProjectBackers />

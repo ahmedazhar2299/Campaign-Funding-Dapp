@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import CreateProject from "../Projects/CreateProject";
 
 const Hero = () => {
+  const [openAddProject, setOpenAddProject] = useState(false);
+  const handleAddProjectOpen = () => setOpenAddProject(true);
+  const handleAddProjectClose = () => setOpenAddProject(false);
   return (
     <div className="pt-24 m-10 text-center">
       <div>
@@ -10,12 +14,20 @@ const Hero = () => {
         </p>
       </div>
       <div className="my-10 flex flex-shrink-0 gap-2 justify-center">
-        <button className="rounded-full shrink-0 focus:outline-none uppercase text-sm text-white bg-green-600 hover:bg-green-700 w-36 h-8">
+        <button
+          onClick={handleAddProjectOpen}
+          className="rounded-full shrink-0 focus:outline-none uppercase text-sm text-white bg-green-600 hover:bg-green-700 w-36 h-8"
+        >
           Add Project
         </button>
         <button className=" border shrink-0 border-green-600 rounded-full focus:outline-none uppercase text-sm text-green-600 bg-white hover:text-white hover:bg-green-700 w-36 h-8">
           Back Projects
         </button>
+        <CreateProject
+          Operation={"Add"}
+          setOpen={openAddProject}
+          setClose={handleAddProjectClose}
+        />
       </div>
       <div className="flex justify-evenly shadow-lg whitespace-nowrap">
         <div className="border w-full p-4 ">
