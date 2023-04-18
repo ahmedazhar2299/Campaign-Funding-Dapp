@@ -12,6 +12,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+:root {
+  --secondary: #b2b2b2;
+}
+
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 12px;
+}
 
 @tailwind base;
 @tailwind components;

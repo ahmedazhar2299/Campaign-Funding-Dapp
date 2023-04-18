@@ -1,11 +1,12 @@
 import React from "react";
 import Identicons from "react-identicons";
 import { FaEthereum } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Projects = () => {
   const itemsList = [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4];
   return (
-    <div className="flex gap-10 justify-center flex-wrap w-full">
+    <div className="flex gap-10  justify-center flex-wrap w-full">
       {itemsList.map((e, i) => {
         return <ProjectItem e={e} key={i} />;
       })}
@@ -15,7 +16,10 @@ const Projects = () => {
 
 const ProjectItem = (e) => {
   return (
-    <div className="cursor-pointer border rounded-lg shadow-lg hover:scale-105 ">
+    <Link
+      to={"/project/1"}
+      className="cursor-pointer border rounded-lg shadow-lg hover:scale-105 "
+    >
       <div className="h-64 w-56 overflow-hidden rounded-lg">
         <img
           className="w-full h-full object-cover"
@@ -46,7 +50,7 @@ const ProjectItem = (e) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
