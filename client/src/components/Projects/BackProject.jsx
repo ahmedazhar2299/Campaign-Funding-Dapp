@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
 import { Modal, Button, Form } from "rsuite";
-const BackProject = ({ setOpen, setClose }) => {
+import { backCampaign, depositAmount } from "../../store/nobietySlice";
+const BackProject = ({ setOpen, setClose, title }) => {
+  const donation = useRef();
+  const dispatch = useDispatch();
+  const donateCampgain = () => {
+    if (donation.current.value !== "") {
+      dispatch(depositAmount(donation.current.value));
+    }
+  };
   return (
     <Modal open={setOpen} onClose={setClose}>
       <Modal.Header>
@@ -12,10 +21,20 @@ const BackProject = ({ setOpen, setClose }) => {
         <Form fluid>
           <Form.Group controlId="title">
             <Form.ControlLabel>Amount (Eth)</Form.ControlLabel>
-            <Form.Control min={0.01} name="title" type="number" />
+            <Form.Control
+              inputRef={donation}
+              min={1}
+              name="title"
+              type="number"
+            />
           </Form.Group>
         </Form>
-        <Button block onClick={setClose} color="yellow" appearance="primary">
+        <Button
+          block
+          onClick={donateCampgain}
+          color="yellow"
+          appearance="primary"
+        >
           Back Project
         </Button>
       </Modal.Body>

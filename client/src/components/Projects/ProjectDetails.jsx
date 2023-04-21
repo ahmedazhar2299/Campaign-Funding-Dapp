@@ -7,6 +7,21 @@ import DeleteProject from "./DeleteProject";
 import BackProject from "./BackProject";
 import { useLocation } from "react-router-dom";
 
+function daysAgo(timestamp) {
+  const now = Date.now();
+  const diff = now - timestamp;
+  const msInDay = 24 * 60 * 60 * 1000;
+  const days = Math.floor(diff / msInDay);
+
+  if (days === 0) {
+    return "today";
+  } else if (days === 1) {
+    return "yesterday";
+  } else {
+    return `${days} days ago`;
+  }
+}
+
 const ProjectDetails = () => {
   const [openProject, setOpenProject] = useState({
     update: false,
@@ -128,6 +143,7 @@ const ProjectDetails = () => {
           }
         />
         <BackProject
+          title={data.title}
           setOpen={openProject.back}
           setClose={() =>
             setOpenProject((e) => {
