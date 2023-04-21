@@ -1,48 +1,73 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Identicons from "react-identicons";
 import { FaEthereum } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCampaigns } from "../../store/nobietySlice";
 
 const Projects = () => {
-  const itemsList = [1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4];
+  const { allCampaignList } = useSelector((state) => state.nobietyReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(getAllCampaigns());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
   return (
     <div className="flex gap-10  justify-center flex-wrap w-full">
-      {itemsList.map((e, i) => {
-        return <ProjectItem e={e} key={i} />;
+      {allCampaignList.map((data, i) => {
+        return <ProjectItem data={data} key={i} />;
       })}
     </div>
   );
 };
 
-const ProjectItem = (e) => {
+const ProjectItem = (data) => {
   const navigate = useNavigate();
+  const percentageRaised =
+    (parseInt(data.data.raisedAmount) / parseInt(data.data.amount)) * 100;
+  const progressBarWidth = Math.ceil((percentageRaised / 100) * 12);
   return (
     <div
-      onClick={() => navigate("/project/1")}
+      onClick={() =>
+        navigate("/project/1", {
+          state: data.data,
+        })
+      }
       className="cursor-pointer border rounded-lg shadow-lg hover:scale-105 "
     >
       <div className="h-64 w-56 overflow-hidden rounded-lg">
         <img
           className="w-full h-full object-cover"
-          src="https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2022/06/tac-pham-nft-2-696x344.jpg?fit=700%2C20000&quality=95&ssl=1"
+          src={data.data.url}
           alt=""
         />
       </div>
       <div className="flex text-slate-600 text-sm flex-col gap-2 p-4">
-        <p className="text-black font-bold">Flood</p>
+        <p className="text-black font-bold">{data.data.title}</p>
         <div className="flex text-sm gap-2 items-center">
           <Identicons size={15} string="0x34342" />
-          <small>0x24d...69a5</small>
+          <small>
+            {data.data.owner.slice(0, 5) + " ... " + data.data.owner.slice(-6)}
+          </small>
         </div>
         <div>
-          <p className="text-sm">Expired</p>
+          <p className="text-sm">{data.data.status}</p>
           <div className="w-full bg-slate-300">
-            <div className="w-6/12 border-2 border-green-600 "></div>
+            <div
+              className={`border-2 border-green-600 ${
+                progressBarWidth === 0 ? "w-0" : "w-" + progressBarWidth + "/12"
+              }`}
+            ></div>
           </div>
           <div className="flex text-sm font-bold justify-between">
-            <small>0.01 ETH Raised</small>
+            <small>{data.data.raisedAmount} ETH Raised</small>
             <small className="flex items-center">
-              <FaEthereum /> 2 ETH
+              <FaEthereum /> {data.data.amount} ETH
             </small>
           </div>
           <div className="flex mt-5 text-sm font-bold justify-between">

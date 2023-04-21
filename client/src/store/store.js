@@ -1,12 +1,12 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import { adoptReducer } from './adoptSlice'
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { nobietyReducer } from "./nobietySlice";
 
 export const store = configureStore({
-    reducer:  {
-        adoptReducer : adoptReducer
-    },
-    middleware: getDefaultMiddleware({
-        serializableCheck: false,
-        immutableCheck: false,
-    })
-})
+  reducer: {
+    nobietyReducer: nobietyReducer,
+  },
+  middleware: getDefaultMiddleware({
+    serializableCheck: false,
+    immutableCheck: false,
+  }),
+});

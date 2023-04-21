@@ -12,7 +12,6 @@ const ProjectBackers = () => {
         <th className=" flex p-4 text-md font-semibold w-full justify-around border border-t-0 border-b-0">
           <td className="w-[200px] md:w-full">Backer</td>
           <td className="w-[200px] md:w-full">Donations</td>
-          <td className="w-[200px] md:w-full">Refunded</td>
           <td className="w-[200px] md:w-full">Time</td>
         </th>
         {backersList.map((e, i) => {
@@ -34,7 +33,6 @@ const BuildersInfo = (e) => {
       <td className="flex w-[200px] md:w-full justify-center items-center gap-2">
         <FaEthereum /> 0.01 ETH
       </td>
-      <td className="w-[200px] md:w-full">No</td>
       <td className="w-[200px] md:w-full">11 days ago</td>
     </tr>
   );
