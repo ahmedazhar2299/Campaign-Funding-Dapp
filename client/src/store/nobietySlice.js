@@ -14,12 +14,17 @@ export const initWeb3 = createAsyncThunk("InitWeb3", async (a, thunkAPI) => {
       const contract = new web3.eth.Contract(Nobiety.abi, network.address);
       const addresses = await web3.eth.getAccounts();
       thunkAPI.dispatch(getAllCampaigns());
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          addresses: addresses[0],
-        })
-      );
+
+      window.ethereum.on("accountsChanged", (newAccounts) => {
+        thunkAPI.dispatch(setAddress(newAccounts[0]));
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
+            addresses: newAccounts[0],
+          })
+        );
+      });
+
       return {
         web3,
         contract: contract,
@@ -30,6 +35,13 @@ export const initWeb3 = createAsyncThunk("InitWeb3", async (a, thunkAPI) => {
     console.log("Error in loading Blockchain = ", error);
   }
 });
+
+export const setAddress = createAsyncThunk(
+  "setAddress",
+  async (address, thunkAPI) => {
+    return address;
+  }
+);
 
 export const getAllCampaigns = createAsyncThunk(
   "allCampaigns",
@@ -59,6 +71,18 @@ export const updateCampaign = createAsyncThunk(
       .send({
         from: address,
       });
+    thunkAPI.dispatch(getAllCampaigns());
+  }
+);
+
+export const deleteCampaign = createAsyncThunk(
+  "deleteCampaign",
+  async (title, thunkAPI) => {
+    const contract = thunkAPI.getState().nobietyReducer.contract;
+    const address = thunkAPI.getState().nobietyReducer.address;
+    await contract.methods.deleteCampaign(title).send({
+      from: address,
+    });
     thunkAPI.dispatch(getAllCampaigns());
   }
 );
@@ -101,6 +125,9 @@ const nobietySlice = createSlice({
     },
     [getAllCampaigns.fulfilled]: (state, action) => {
       state.allCampaignList = action.payload;
+    },
+    [setAddress.fulfilled]: (state, action) => {
+      state.address = action.payload;
     },
   },
 });

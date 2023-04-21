@@ -15,7 +15,7 @@ const BackProject = ({ setOpen, setClose }) => {
             <Form.Control min={0.01} name="title" type="number" />
           </Form.Group>
         </Form>
-        <Button block onClick={setClose} color="green" appearance="primary">
+        <Button block onClick={setClose} color="yellow" appearance="primary">
           Back Project
         </Button>
       </Modal.Body>

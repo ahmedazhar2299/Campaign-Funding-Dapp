@@ -90,7 +90,7 @@ const CreateProject = ({ setOpen, setClose, Operation, oldTitle }) => {
               <Form.Control minLength={5} name="title" inputRef={title} />
             </Form.Group>
             <Form.Group controlId="cost">
-              <Form.ControlLabel>Cost (Eth)</Form.ControlLabel>
+              <Form.ControlLabel>Amount (Eth)</Form.ControlLabel>
               <Form.Control
                 onChange={(value, event) => {
                   if (event.target.value < 0.01) {
@@ -131,7 +131,7 @@ const CreateProject = ({ setOpen, setClose, Operation, oldTitle }) => {
                 onClick={() => {
                   createNewCampaign();
                 }}
-                color="green"
+                color="yellow"
                 appearance="primary"
               >
                 {Operation} Project

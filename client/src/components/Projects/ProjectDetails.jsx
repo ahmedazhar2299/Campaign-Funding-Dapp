@@ -19,7 +19,6 @@ const ProjectDetails = () => {
     (parseInt(data.raisedAmount) / parseInt(data.amount)) * 100;
   const progressBarWidth = Math.ceil((percentageRaised / 100) * 12);
   const auth = JSON.parse(localStorage.getItem("auth"));
-
   return (
     <div className="mt-24 lg:mx-40 md:mx-16 mx-10 ">
       <div className="flex flex-col md:flex-row gap-5">
@@ -70,18 +69,10 @@ const ProjectDetails = () => {
           </div>
         </div>
       </div>
-      <div className="mt-10 w-full whitespace-nowrap flex gap-2 justify-center">
-        <button
-          onClick={() =>
-            setOpenProject((e) => {
-              return { ...e, back: true };
-            })
-          }
-          className="px-4 py-2 bg-green-500 hover:bg-green-700 text-xs text-white uppercase rounded-full"
-        >
-          Back Project
-        </button>
-        {auth.addresses === data.owner ? (
+      <div className="mt-10 w-full whitespace-nowrap flex gap-2 justify-start">
+        {auth.addresses
+          .toLowerCase()
+          .localeCompare(data.owner.toLowerCase()) === 0 ? (
           <>
             <button
               onClick={() =>
@@ -105,7 +96,16 @@ const ProjectDetails = () => {
             </button>
           </>
         ) : (
-          ""
+          <button
+            onClick={() =>
+              setOpenProject((e) => {
+                return { ...e, back: true };
+              })
+            }
+            className="px-4 py-2 bg-green-500 hover:bg-green-700 text-xs text-white uppercase rounded-full"
+          >
+            Back Project
+          </button>
         )}
 
         <CreateProject
@@ -120,6 +120,7 @@ const ProjectDetails = () => {
         />
         <DeleteProject
           setOpen={openProject.delete}
+          title={data.title}
           setClose={() =>
             setOpenProject((e) => {
               return { ...e, delete: false };

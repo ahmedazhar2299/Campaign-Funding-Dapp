@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import CreateProject from "../Projects/CreateProject";
 
-const Hero = () => {
+const Hero = memo(({ totalCampaigns }) => {
   const [openAddProject, setOpenAddProject] = useState(false);
   const handleAddProjectOpen = () => setOpenAddProject(true);
   const handleAddProjectClose = () => setOpenAddProject(false);
@@ -9,18 +9,18 @@ const Hero = () => {
     <div className="pt-24 m-10 text-center">
       <div>
         <p className="text-4xl md:text-5xl lg:text-6xl font-bold leading-snug ">
-          Bring Creative Projects to Life on{" "}
-          <p className="text-green-600 uppercase my-2">Genesis.</p>{" "}
+          Unleash the power of generosity with{" "}
+          <p className="text-yellow-600 uppercase my-2">Nobeity.</p>{" "}
         </p>
       </div>
       <div className="my-10 flex flex-shrink-0 gap-2 justify-center">
         <button
           onClick={handleAddProjectOpen}
-          className="rounded-full shrink-0 focus:outline-none uppercase text-sm text-white bg-green-600 hover:bg-green-700 w-36 h-8"
+          className="rounded-full shrink-0 focus:outline-none uppercase text-sm text-white bg-yellow-600 hover:bg-yellow-700 w-36 h-8"
         >
           Add Project
         </button>
-        <button className=" border shrink-0 border-green-600 rounded-full focus:outline-none uppercase text-sm text-green-600 bg-white hover:text-white hover:bg-green-700 w-36 h-8">
+        <button className=" border shrink-0 border-yellow-600 rounded-full focus:outline-none uppercase text-sm text-yellow-600 bg-white hover:text-white hover:bg-yellow-700 w-36 h-8">
           Back Projects
         </button>
         <CreateProject
@@ -31,7 +31,7 @@ const Hero = () => {
       </div>
       <div className="flex justify-evenly shadow-lg whitespace-nowrap">
         <div className="border w-full p-4 ">
-          <p className="font-bold">151</p>
+          <p className="font-bold">{totalCampaigns ? totalCampaigns : 0}</p>
           <p>Projects</p>
         </div>
         <div className="border w-full p-4 ">
@@ -45,6 +45,6 @@ const Hero = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Hero;
