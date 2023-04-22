@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Web3 from "web3";
 import Nobiety from "../contracts/Nobiety.json";
+import { createBrowserHistory } from "history";
+const history = createBrowserHistory();
 
 export const initWeb3 = createAsyncThunk("InitWeb3", async (a, thunkAPI) => {
   try {
@@ -22,6 +24,8 @@ export const initWeb3 = createAsyncThunk("InitWeb3", async (a, thunkAPI) => {
             addresses: newAccounts[0],
           })
         );
+        history.push("/");
+        //window.location.reload();
       });
 
       return {
@@ -177,6 +181,16 @@ export const addNewCampaign = createAsyncThunk(
   }
 );
 
+export const getCampaignDetail = createAsyncThunk(
+  "getCampaign",
+  async (title, thunkAPI) => {
+    const contract = thunkAPI.getState().nobietyReducer.contract;
+    const res = await contract.methods.retreiveCampaignFromMemory(title).call();
+    thunkAPI.dispatch(getBackers(title));
+    return res;
+  }
+);
+
 const nobietySlice = createSlice({
   name: "nobietySlice",
   initialState: {
@@ -186,6 +200,7 @@ const nobietySlice = createSlice({
     allCampaignList: [],
     wallet: 0,
     backerList: [],
+    campaignDetail: null,
   },
   reducers: {
     nobiety: () => {},
@@ -207,6 +222,9 @@ const nobietySlice = createSlice({
     },
     [getBackers.fulfilled]: (state, action) => {
       state.backerList = action.payload;
+    },
+    [getCampaignDetail.fulfilled]: (state, action) => {
+      state.campaignDetail = action.payload;
     },
   },
 });

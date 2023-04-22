@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Identicons from "react-identicons";
 import { FaEthereum } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCampaigns, getBackers } from "../../store/nobietySlice";
+import { getAllCampaigns } from "../../store/nobietySlice";
 
 const Projects = () => {
   const { allCampaignList } = useSelector((state) => state.nobietyReducer);
@@ -29,16 +29,14 @@ const Projects = () => {
 const ProjectItem = (data) => {
   const navigate = useNavigate();
   const { backerList } = useSelector((state) => state.nobietyReducer);
-  const percentageRaised =
+  const progressBarWidth =
     (parseInt(data.data.raisedAmount) / parseInt(data.data.amount)) * 100;
-  const progressBarWidth = Math.ceil((percentageRaised / 100) * 12);
+
   return (
     <div
-      onClick={() =>
-        navigate("/project/1", {
-          state: data.data,
-        })
-      }
+      onClick={() => {
+        navigate(`/project/${data.data.title}`);
+      }}
       className="cursor-pointer border rounded-lg shadow-lg hover:scale-105 "
     >
       <div className="h-64 w-56 overflow-hidden rounded-lg">
@@ -60,9 +58,10 @@ const ProjectItem = (data) => {
           <p className="text-sm">{data.data.status}</p>
           <div className="w-full bg-slate-300">
             <div
-              className={`border-2 border-green-600 ${
-                progressBarWidth === 0 ? "w-0" : "w-" + progressBarWidth + "/12"
-              }`}
+              style={{
+                width: progressBarWidth + "%",
+              }}
+              className="border-2 border-green-600"
             ></div>
           </div>
           <div className="flex text-sm font-bold justify-between">

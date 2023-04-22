@@ -48,6 +48,7 @@ contract Nobiety {
 
 
 
+
    function deposit() public payable {
     balances[msg.sender] += msg.value;
     }
@@ -64,35 +65,38 @@ contract Nobiety {
         emit withdrawAmount(msg.sender, _amount);
     }
 
-    function backCampaign(string memory _title,uint _donation,string memory _time) public {
-        require(isTitleExist(_title)==false,"Invalid title provided");
-        Campaign storage currentCampaign = getCampaign(_title);
-        require(msg.sender != currentCampaign.owner, "Owner cannot back his own campaign");
-        require(balances[msg.sender] >= _donation, "Insufficient balance");
-        balances[msg.sender] -= _donation;
-        _donation = _donation / 1000000000000000000;
-        if (currentCampaign.raisedAmount+_donation >= currentCampaign.amount) {
-            currentCampaign.raisedAmount = currentCampaign.amount;
-        }
-        else 
-            currentCampaign.raisedAmount += _donation;
-        Backer memory backer = Backer({
-                backer : msg.sender,
-                donation : _donation,
-                time : _time
-        });
-            backers[_title].push(backer);
-            if (currentCampaign.raisedAmount == currentCampaign.amount) {
-                sendFundsToOwner(_title);
-            }
-            emit backerCampagin(backer,_title);
+    function backCampaign(string memory _title, uint _donation, string memory _time) public {
+    require(isTitleExist(_title) == false, "Invalid title provided");
+    Campaign storage currentCampaign = getCampaign(_title);
+    require(currentCampaign.raisedAmount < currentCampaign.amount, "Campaign fully funded");
+    require(msg.sender != currentCampaign.owner, "Owner cannot back his own campaign");
+    require(balances[msg.sender] >= _donation, "Insufficient balance");
+    uint donationInEther = _donation / 1 ether;
+    uint remainingAmount = currentCampaign.amount - currentCampaign.raisedAmount;
+    uint donationToAdd = donationInEther < remainingAmount ? donationInEther : remainingAmount;
+    currentCampaign.raisedAmount += donationToAdd;
+    balances[msg.sender] -= donationToAdd * 1 ether;
+
+    Backer memory backer = Backer({
+        backer: msg.sender,
+        donation: donationToAdd,
+        time: _time
+    });
+
+    backers[_title].push(backer);
+
+    if (currentCampaign.raisedAmount == currentCampaign.amount) {
+        sendFundsToOwner(_title);
     }
+
+    emit backerCampagin(backer, _title);
+}
     
 
     function sendFundsToOwner(string memory _title) public payable {
         Campaign storage currentCampaign = getCampaign(_title);
 
-        require(currentCampaign.raisedAmount < currentCampaign.amount, "Campaign not fully funded");
+        require(currentCampaign.raisedAmount == currentCampaign.amount, "Campaign not fully funded");
 
         uint256 amountToSend = currentCampaign.raisedAmount;
         address payable owner = payable(currentCampaign.owner);
@@ -114,6 +118,18 @@ contract Nobiety {
     }
     return flag;
 }
+
+    function retreiveCampaignFromMemory(string memory _title) public view returns (Campaign memory) {
+        for (uint256 i = 0; i < allCampaignList.length; i++) {
+            Campaign storage currentCampaign = allCampaignList[i];
+            if (keccak256(bytes(currentCampaign.title)) == keccak256(bytes(_title))) {
+                return currentCampaign;
+            }
+        }
+        revert("Campaign not found");
+    }
+
+
 
    function addCampaign(string memory _title, uint256 _amount, string memory _date, string memory _url, string memory _description) public {
         require(isTitleExist(_title),"Cannot add a campagain with same name");

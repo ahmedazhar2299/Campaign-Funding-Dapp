@@ -4,7 +4,6 @@ import Identicons from "react-identicons";
 import { useSelector } from "react-redux";
 
 function daysAgo(timeString) {
-  console.log(timeString);
   const [hours, minutes, seconds] = timeString.split(":");
   const now = new Date();
   const newDate = new Date(
