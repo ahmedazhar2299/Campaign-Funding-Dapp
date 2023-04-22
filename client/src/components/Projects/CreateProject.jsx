@@ -96,7 +96,12 @@ const CreateProject = ({ setOpen, setClose, Operation, oldTitle }) => {
             </Form.Group>
             <Form.Group controlId="url">
               <Form.ControlLabel>Image Url</Form.ControlLabel>
-              <Form.Control inputRef={imageUrl} name="url" type="text" />
+              <Form.Control
+                autoComplete="off"
+                inputRef={imageUrl}
+                name="url"
+                type="text"
+              />
             </Form.Group>
             <Form.Group controlId="textarea">
               <Form.ControlLabel>Textarea</Form.ControlLabel>
@@ -113,7 +118,7 @@ const CreateProject = ({ setOpen, setClose, Operation, oldTitle }) => {
                 onClick={() => {
                   createNewCampaign();
                 }}
-                color="yellow"
+                color="blue"
                 appearance="primary"
               >
                 {Operation} Project

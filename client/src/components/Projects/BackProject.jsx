@@ -44,7 +44,7 @@ const BackProject = ({ setOpen, setClose, title }) => {
         <Button
           block
           onClick={donateCampgain}
-          color="yellow"
+          color="blue"
           appearance="primary"
         >
           Back Project

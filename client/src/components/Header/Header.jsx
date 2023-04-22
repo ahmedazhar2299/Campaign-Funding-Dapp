@@ -11,10 +11,10 @@ const Header = () => {
   const dispatch = useDispatch();
   const [openWallet, setOpenWallet] = useState(false);
   return (
-    <header className=" fixed w-full top-0 z-10 bg-white px-10 flex justify-between py-4 shadow-lg">
+    <header className=" fixed w-full bg-white  top-0 z-10  px-10 flex justify-between py-4 shadow-lg">
       <div
         onClick={() => navigate("/")}
-        className="flex uppercase cursor-pointer justify-center items-center gap-2 font-bold text-xl"
+        className="flex text-primary uppercase cursor-pointer justify-center items-center gap-2 font-bold text-xl"
       >
         <p>Nobiety</p>
         <BiDonateHeart />
@@ -34,7 +34,7 @@ const Header = () => {
           ""
         )}
 
-        <div className="border-0 cursor-pointer bg-yellow-600 whitespace-nowrap flex-shrink-0 hover:bg-yellow-700 active:bg-yellow-700 rounded-full w-36 text-center h-8 flex justify-center items-center">
+        <div className="border-0 cursor-pointer bg-primary whitespace-nowrap flex-shrink-0 hover:bg-secondary active:bg-secondary rounded-full w-36 text-center h-8 flex justify-center items-center">
           <button
             onClick={() => !address && dispatch(initWeb3())}
             className="focus:outline-none font-bold uppercase text-white text-sm"

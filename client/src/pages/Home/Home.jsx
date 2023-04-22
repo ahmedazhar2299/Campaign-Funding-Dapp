@@ -22,7 +22,7 @@ const Home = () => {
       <div className="fixed bottom-0 right-0 m-10">
         <button
           onClick={() => setOpenAddProject(true)}
-          className="uppercase focus:outline-none text-sm text-white bg-yellow-600 items-center flex justify-center h-12 w-12 rounded-full hover:bg-yellow-700"
+          className="uppercase focus:outline-none text-sm text-white bg-primary items-center flex justify-center h-12 w-12 rounded-full hover:bg-secondary"
         >
           <MdAdd size={25} />
         </button>

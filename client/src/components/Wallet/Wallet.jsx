@@ -54,7 +54,7 @@ const Wallet = ({ setOpen, setClose }) => {
                   />
                 </Form.Group>
                 <div onClick={deposit} className="text-center">
-                  <Button color="blue" appearance="primary">
+                  <Button color="green" appearance="primary">
                     Deposit
                   </Button>
                 </div>
@@ -72,7 +72,7 @@ const Wallet = ({ setOpen, setClose }) => {
                   />
                 </Form.Group>
                 <div onClick={withdraw} className="text-center">
-                  <Button color="yellow" appearance="primary">
+                  <Button color="blue" appearance="primary">
                     Withdraw
                   </Button>
                 </div>
