@@ -150,54 +150,45 @@ contract Nobiety {
 
     function updateCampaign(string memory _oldTitle, string memory _title, uint256 _amount, string memory _date, string memory _url, string memory _description) public {
     require(isTitleExist(_title),"Cannot add a campagain with same name");
-    for (uint256 i = 0; i < allCampaignList.length; i++) {
-        Campaign storage currentCampaign = allCampaignList[i];
-        if (keccak256(bytes(currentCampaign.title)) == keccak256(bytes(_oldTitle)) && currentCampaign.owner == msg.sender) {
-            currentCampaign.title = _title;
-            currentCampaign.amount = _amount;
-            currentCampaign.date = _date;
-            currentCampaign.url = _url;
-            currentCampaign.description = _description;
-            emit updateCampagin(currentCampaign);
-            break;
-        }
-    }
-    }
-
-    function deleteCampaign(string memory _title) public {
+    Campaign storage campaignToUpdate = getCampaign(_oldTitle);
+    require(campaignToUpdate.owner == msg.sender, "Only owner can update campaign");
+    require(campaignToUpdate.raisedAmount== 0 ether, "Cannot update already started campaign");
+        campaignToUpdate.title = _title;
+        campaignToUpdate.amount = _amount;
+        campaignToUpdate.date = _date;
+        campaignToUpdate.url = _url;
+        campaignToUpdate.description = _description;
+        emit updateCampagin(campaignToUpdate);
         
-    for (uint256 i = 0; i < allCampaignList.length; i++) {
-        Campaign storage currentCampaign = allCampaignList[i];
-        if (keccak256(bytes(currentCampaign.title)) == keccak256(bytes(_title)) && currentCampaign.owner == msg.sender) {
-          currentCampaign.status = "Deleted";
-          if(currentCampaign.raisedAmount>0){
-                refundCampaign(currentCampaign.title);
-          }
-          emit deleteCampagin(currentCampaign);
-          break;
+    }
+
+    function deleteCampaign(string memory _title) public payable {
+        
+        Campaign storage campaignToDelete = getCampaign(_title);
+
+        require(campaignToDelete.owner == msg.sender, "Only owner can delete campaign");
+        require(keccak256(bytes(campaignToDelete.status)) != keccak256(bytes("Raised")), "Cannot delete campaign that has raised funds");
+        Backer[] storage backersToRefund = backers[_title];
+        for (uint256 i = 0; i < backersToRefund.length; i++) {
+            Backer storage currentBacker = backersToRefund[i];
+            balances[currentBacker.backer] += currentBacker.donation * 1 ether;
+            emit refund(currentBacker.backer, currentBacker.donation, _title);
         }
-    }
-    }
-
-    function refundCampaign(string memory _title) public payable {
-        Campaign storage currentCampaign = getCampaign(_title);
-
-        require(currentCampaign.raisedAmount > 0, "No funds raised");
-
-        for (uint256 i = 0; i < backers[_title].length; i++) {
-            Backer storage currentBacker = backers[_title][i];
-            uint256 donation = currentBacker.donation;
-            address payable backer = payable(currentBacker.backer);
-
-           // balances[backer] += donation;
-            currentCampaign.raisedAmount -= donation;
-
-            emit refund(backer, donation, _title);
-            
-            (bool success, ) = backer.call{value: donation}("");
-            require(success, "Transfer failed");
+        uint256 indexToDelete;
+        for (uint256 i = 0; i < allCampaignList.length; i++) {
+            Campaign storage currentCampaign = allCampaignList[i];
+            if (keccak256(bytes(currentCampaign.title)) == keccak256(bytes(_title))) {
+                indexToDelete = i;
+                break;
+            }
         }
+        allCampaignList[indexToDelete] = allCampaignList[allCampaignList.length - 1];
+        allCampaignList.pop();
+
+        emit deleteCampagin(campaignToDelete);
+    
     }
+
     
     function getBackers(string memory _title) public view returns (Backer[] memory) {
         return backers[_title];

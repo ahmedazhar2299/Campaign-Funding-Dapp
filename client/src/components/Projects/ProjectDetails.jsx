@@ -18,7 +18,7 @@ const ProjectDetails = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const title = location.pathname.split("/")[2].replace("%20", " ");
+  const title = location.pathname.split("/")[2].replaceAll("%20", " ");
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch(getCampaignDetail(title));

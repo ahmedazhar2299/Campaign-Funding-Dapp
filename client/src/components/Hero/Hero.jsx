@@ -8,9 +8,9 @@ const Hero = memo(({ totalCampaigns }) => {
   return (
     <div className="pt-24 m-10 text-center">
       <div>
-        <p className="text-4xl md:text-5xl lg:text-6xl font-bold leading-snug ">
-          Unleash the power of generosity with{" "}
-          <p className="text-yellow-600 uppercase my-2">Nobeity.</p>{" "}
+        <p className="text-4xl capitalize md:text-5xl lg:text-6xl font-bold leading-snug ">
+          Breaking barriers, embracing possibilities{" "}
+          <p className="text-yellow-600 uppercase my-2">Nobiety.</p>{" "}
         </p>
       </div>
       <div className="my-10 flex flex-shrink-0 gap-2 justify-center">
