@@ -1,16 +1,16 @@
 import React, { memo, useState } from "react";
 import CreateProject from "../Projects/CreateProject";
 
-const Hero = memo(({ totalCampaigns }) => {
+const Hero = memo(({ totalCampaigns, totalEtherDonated }) => {
   const [openAddProject, setOpenAddProject] = useState(false);
   const handleAddProjectOpen = () => setOpenAddProject(true);
   const handleAddProjectClose = () => setOpenAddProject(false);
   return (
     <div className="pt-24 m-10 text-center">
       <div>
-        <p className="text-4xl capitalize md:text-5xl lg:text-6xl font-bold leading-snug ">
-          Breaking barriers, embracing possibilities{" "}
-          <p className="text-yellow-600 uppercase my-2">Nobiety.</p>{" "}
+        <p className="text-4xl md:text-5xl lg:text-6xl font-bold leading-snug ">
+          Unleash the power of generosity with{" "}
+          <p className="text-yellow-600 uppercase my-2">Nobeity.</p>{" "}
         </p>
       </div>
       <div className="my-10 flex flex-shrink-0 gap-2 justify-center">
@@ -35,11 +35,9 @@ const Hero = memo(({ totalCampaigns }) => {
           <p>Projects</p>
         </div>
         <div className="border w-full p-4 ">
-          <p className="font-bold">69</p>
-          <p>Backings</p>
-        </div>
-        <div className="border w-full p-4 ">
-          <p className="font-bold">1.846 ETH</p>
+          <p className="font-bold">
+            {totalEtherDonated ? totalEtherDonated : 0} ETH
+          </p>
           <p>Donated</p>
         </div>
       </div>

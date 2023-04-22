@@ -8,11 +8,16 @@ import { useSelector } from "react-redux";
 
 const Home = () => {
   const [openAddProject, setOpenAddProject] = useState(false);
-  const { allCampaignList } = useSelector((state) => state.nobietyReducer);
+  const { totalCampaigns, totalEtherDonated } = useSelector(
+    (state) => state.nobietyReducer
+  );
 
   return (
     <MainLayout>
-      <Hero totalCampaigns={allCampaignList.length} />
+      <Hero
+        totalCampaigns={totalCampaigns}
+        totalEtherDonated={totalEtherDonated}
+      />
       <Projects />
       <div className="fixed bottom-0 right-0 m-10">
         <button

@@ -53,6 +53,7 @@ export const getAllCampaigns = createAsyncThunk(
       .getState()
       .nobietyReducer.contract.methods.getAllCampaignList()
       .call();
+    thunkAPI.dispatch(getCampaignInsights());
     return campaignList;
   }
 );
@@ -67,7 +68,6 @@ export const updateCampaign = createAsyncThunk(
         data.oldTitle,
         data.title,
         data.amount,
-        String(data.date),
         data.url,
         data.description
       )
@@ -168,13 +168,7 @@ export const addNewCampaign = createAsyncThunk(
     const contract = thunkAPI.getState().nobietyReducer.contract;
     const address = thunkAPI.getState().nobietyReducer.address;
     await contract.methods
-      .addCampaign(
-        data.title,
-        data.amount,
-        String(data.date),
-        data.url,
-        data.description
-      )
+      .addCampaign(data.title, data.amount, data.url, data.description)
       .send({
         from: address,
       });
@@ -191,6 +185,15 @@ export const getCampaignDetail = createAsyncThunk(
   }
 );
 
+export const getCampaignInsights = createAsyncThunk(
+  "campaignInsights",
+  async (a, thunkAPI) => {
+    const contract = thunkAPI.getState().nobietyReducer.contract;
+    const res = await contract.methods.getInsights().call();
+    return res;
+  }
+);
+
 const nobietySlice = createSlice({
   name: "nobietySlice",
   initialState: {
@@ -201,6 +204,8 @@ const nobietySlice = createSlice({
     wallet: 0,
     backerList: [],
     campaignDetail: null,
+    totalCampaigns: 0,
+    totalEtherDonated: 0,
   },
   reducers: {
     nobiety: () => {},
@@ -225,6 +230,10 @@ const nobietySlice = createSlice({
     },
     [getCampaignDetail.fulfilled]: (state, action) => {
       state.campaignDetail = action.payload;
+    },
+    [getCampaignInsights.fulfilled]: (state, action) => {
+      state.totalCampaigns = action.payload[0];
+      state.totalEtherDonated = action.payload[1];
     },
   },
 });

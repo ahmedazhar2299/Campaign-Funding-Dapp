@@ -11,10 +11,4 @@ const urlValidate = (url) => {
   );
 };
 
-const dateValidate = (enddate) => {
-  const endDate = new Date(enddate);
-  const currentDate = new Date();
-  return endDate.getTime() > currentDate.getTime();
-};
-
-export { dateValidate, strValidate, urlValidate };
+export { strValidate, urlValidate };

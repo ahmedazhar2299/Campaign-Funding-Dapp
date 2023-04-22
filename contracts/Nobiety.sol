@@ -11,7 +11,6 @@ contract Nobiety {
     struct Campaign{
         string title;
         uint256 amount;
-        string date;
         string url;
         string description;
         string status;
@@ -93,18 +92,13 @@ contract Nobiety {
 }
     
 
-    function sendFundsToOwner(string memory _title) public payable {
+    function sendFundsToOwner(string memory _title) public {
         Campaign storage currentCampaign = getCampaign(_title);
 
         require(currentCampaign.raisedAmount == currentCampaign.amount, "Campaign not fully funded");
 
-        uint256 amountToSend = currentCampaign.raisedAmount;
-        address payable owner = payable(currentCampaign.owner);
-
-        (bool success, ) = owner.call{value: amountToSend}("");
-        require(success, "Transfer failed");
-        currentCampaign.status = "Raised";
-        emit fundsSentToOwner(owner, amountToSend, _title);
+        balances[currentCampaign.owner]+=currentCampaign.raisedAmount * 1 ether;
+        emit fundsSentToOwner(currentCampaign.owner, currentCampaign.raisedAmount, _title);
     }
 
     function isTitleExist(string memory title) public view  returns(bool) {
@@ -131,12 +125,11 @@ contract Nobiety {
 
 
 
-   function addCampaign(string memory _title, uint256 _amount, string memory _date, string memory _url, string memory _description) public {
+   function addCampaign(string memory _title, uint256 _amount, string memory _url, string memory _description) public {
         require(isTitleExist(_title),"Cannot add a campagain with same name");
         Campaign memory newCampaign = Campaign({
             title: _title,
             amount: _amount,
-            date: _date,
             url: _url,
             description: _description,
             status : "Live",
@@ -148,18 +141,29 @@ contract Nobiety {
         emit launchCampagin(newCampaign);
     }
 
-    function updateCampaign(string memory _oldTitle, string memory _title, uint256 _amount, string memory _date, string memory _url, string memory _description) public {
+    function updateCampaign(string memory _oldTitle, string memory _title, uint256 _amount, string memory _url, string memory _description) public {
     require(isTitleExist(_title),"Cannot add a campagain with same name");
     Campaign storage campaignToUpdate = getCampaign(_oldTitle);
     require(campaignToUpdate.owner == msg.sender, "Only owner can update campaign");
     require(campaignToUpdate.raisedAmount== 0 ether, "Cannot update already started campaign");
         campaignToUpdate.title = _title;
         campaignToUpdate.amount = _amount;
-        campaignToUpdate.date = _date;
         campaignToUpdate.url = _url;
         campaignToUpdate.description = _description;
         emit updateCampagin(campaignToUpdate);
         
+    }
+
+
+    function getInsights() public view returns (uint,uint) {
+        uint totalEthCollected = 0;
+        uint totalCampaigns = allCampaignList.length;
+        for (uint i=0;i<totalCampaigns;i++){
+        Campaign storage camp = allCampaignList[i];
+        if(camp.raisedAmount>0)
+            totalEthCollected+= camp.raisedAmount;
+        }
+        return (totalCampaigns,totalEthCollected);
     }
 
     function deleteCampaign(string memory _title) public payable {

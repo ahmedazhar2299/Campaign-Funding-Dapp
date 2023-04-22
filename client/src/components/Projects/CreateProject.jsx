@@ -1,10 +1,6 @@
-import React, { useRef, useState } from "react";
-import { Modal, Button, Form, Input, DatePicker } from "rsuite";
-import {
-  dateValidate,
-  strValidate,
-  urlValidate,
-} from "../../helpers/formValidator";
+import React, { useRef } from "react";
+import { Modal, Button, Form, Input } from "rsuite";
+import { strValidate, urlValidate } from "../../helpers/formValidator";
 import { useDispatch } from "react-redux";
 
 import {
@@ -21,14 +17,12 @@ const CreateProject = ({ setOpen, setClose, Operation, oldTitle }) => {
 
   const title = useRef();
   const cost = useRef();
-  const [date, setDate] = useState(null);
   const imageUrl = useRef();
   const description = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const createNewCampaign = (event) => {
-    const Date = date;
     const Title = title.current.value;
     const ImageUrl = imageUrl.current.value;
     const Description = description.current.value;
@@ -37,15 +31,13 @@ const CreateProject = ({ setOpen, setClose, Operation, oldTitle }) => {
     if (
       strValidate(Title) &&
       urlValidate(ImageUrl) &&
-      strValidate(Description) &&
-      dateValidate(Date)
+      strValidate(Description)
     ) {
       if (Operation === "Add") {
         dispatch(
           addNewCampaign({
             title: Title,
             amount: Amount,
-            date: Date,
             url: ImageUrl,
             description: Description,
           })
@@ -56,7 +48,6 @@ const CreateProject = ({ setOpen, setClose, Operation, oldTitle }) => {
             oldTitle: oldTitle,
             title: Title,
             amount: Amount,
-            date: Date,
             url: ImageUrl,
             description: Description,
           })
@@ -71,7 +62,6 @@ const CreateProject = ({ setOpen, setClose, Operation, oldTitle }) => {
         imageUrl.current.setCustomValidity("Invalid Url!");
       !strValidate(Description) &&
         description.current.setCustomValidity("Invalid Description!");
-      !dateValidate(Date) && alert("Invalid Date");
     }
   };
 
@@ -102,14 +92,6 @@ const CreateProject = ({ setOpen, setClose, Operation, oldTitle }) => {
                 name="cost"
                 type="number"
                 inputRef={cost}
-              />
-            </Form.Group>
-            <Form.Group controlId="date">
-              <Form.ControlLabel>Date</Form.ControlLabel>
-              <DatePicker
-                className="w-full"
-                format="yyyy-MM-dd HH:mm:ss"
-                onChange={(e) => setDate(e)}
               />
             </Form.Group>
             <Form.Group controlId="url">

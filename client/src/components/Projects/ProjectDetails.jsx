@@ -41,8 +41,6 @@ const ProjectDetails = () => {
 
   const auth = JSON.parse(localStorage.getItem("auth"));
 
-  // dispatch(getBackers(data.title));
-
   return (
     <div className="mt-24 lg:mx-40 md:mx-16 mx-10 ">
       <div className="flex flex-col md:flex-row gap-5">
@@ -57,6 +55,7 @@ const ProjectDetails = () => {
         </div>
         <div className="w-full flex flex-col gap-2">
           <p className="font-bold text-lg">{campaignDetail.title}</p>
+
           <p className="text-xs text-slate-400">{campaignDetail.status}</p>
           <div className="flex justify-between w-full">
             <div className="flex text-sm gap-2 items-center">
