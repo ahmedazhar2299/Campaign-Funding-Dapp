@@ -3,7 +3,7 @@ import Identicons from "react-identicons";
 import { FaEthereum } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCampaigns } from "../../store/nobietySlice";
+import { getAllCampaigns, getBackers } from "../../store/nobietySlice";
 
 const Projects = () => {
   const { allCampaignList } = useSelector((state) => state.nobietyReducer);
@@ -28,6 +28,7 @@ const Projects = () => {
 
 const ProjectItem = (data) => {
   const navigate = useNavigate();
+  const { backerList } = useSelector((state) => state.nobietyReducer);
   const percentageRaised =
     (parseInt(data.data.raisedAmount) / parseInt(data.data.amount)) * 100;
   const progressBarWidth = Math.ceil((percentageRaised / 100) * 12);
@@ -71,7 +72,7 @@ const ProjectItem = (data) => {
             </small>
           </div>
           <div className="flex mt-5 text-sm font-bold justify-between">
-            <small>3 Backers</small>
+            <small>{backerList.length} Backers</small>
             <small>Open</small>
           </div>
         </div>

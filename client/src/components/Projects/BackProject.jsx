@@ -1,13 +1,21 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Modal, Button, Form } from "rsuite";
-import { backCampaign, depositAmount } from "../../store/nobietySlice";
+import { backACampaign } from "../../store/nobietySlice";
 const BackProject = ({ setOpen, setClose, title }) => {
   const donation = useRef();
   const dispatch = useDispatch();
   const donateCampgain = () => {
-    if (donation.current.value !== "") {
-      dispatch(depositAmount(donation.current.value));
+    if (
+      donation.current.value !== "" &&
+      parseFloat(donation.current.value) >= 1
+    ) {
+      dispatch(
+        backACampaign({
+          title: title,
+          donation: donation.current.value,
+        })
+      );
     }
   };
   return (

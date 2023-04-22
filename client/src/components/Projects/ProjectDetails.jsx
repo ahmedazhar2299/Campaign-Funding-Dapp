@@ -6,21 +6,8 @@ import CreateProject from "./CreateProject";
 import DeleteProject from "./DeleteProject";
 import BackProject from "./BackProject";
 import { useLocation } from "react-router-dom";
-
-function daysAgo(timestamp) {
-  const now = Date.now();
-  const diff = now - timestamp;
-  const msInDay = 24 * 60 * 60 * 1000;
-  const days = Math.floor(diff / msInDay);
-
-  if (days === 0) {
-    return "today";
-  } else if (days === 1) {
-    return "yesterday";
-  } else {
-    return `${days} days ago`;
-  }
-}
+import { useDispatch } from "react-redux";
+import { getBackers } from "../../store/nobietySlice";
 
 const ProjectDetails = () => {
   const [openProject, setOpenProject] = useState({
@@ -34,6 +21,9 @@ const ProjectDetails = () => {
     (parseInt(data.raisedAmount) / parseInt(data.amount)) * 100;
   const progressBarWidth = Math.ceil((percentageRaised / 100) * 12);
   const auth = JSON.parse(localStorage.getItem("auth"));
+  const dispatch = useDispatch();
+  dispatch(getBackers(data.title));
+
   return (
     <div className="mt-24 lg:mx-40 md:mx-16 mx-10 ">
       <div className="flex flex-col md:flex-row gap-5">

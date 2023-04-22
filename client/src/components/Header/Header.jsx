@@ -21,11 +21,11 @@ const Header = () => {
       </div>
       <div className="flex gap-5">
         {address ? (
-          <div className="border-0 cursor-pointer bg-gray-600 whitespace-nowrap flex-shrink-0 hover:bg-gray-700 active:bg-gray-700 rounded-full w-36 text-center h-8 flex justify-center items-center">
-            <button
-              onClick={() => setOpenWallet(true)}
-              className="focus:outline-none flex items-center gap-2 font-bold uppercase text-white text-sm"
-            >
+          <div
+            onClick={() => setOpenWallet(true)}
+            className="border-0 cursor-pointer bg-gray-600 whitespace-nowrap flex-shrink-0 hover:bg-gray-700 active:bg-gray-700 rounded-full w-36 text-center h-8 flex justify-center items-center"
+          >
+            <button className="focus:outline-none flex items-center gap-2 font-bold uppercase text-white text-sm">
               <BiWallet className="text-xl" />
               Wallet
             </button>

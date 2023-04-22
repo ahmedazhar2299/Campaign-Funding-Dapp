@@ -14,18 +14,15 @@ export const initWeb3 = createAsyncThunk("InitWeb3", async (a, thunkAPI) => {
       const contract = new web3.eth.Contract(Nobiety.abi, network.address);
       const addresses = await web3.eth.getAccounts();
       thunkAPI.dispatch(getAllCampaigns());
-      window.ethereum.on(
-        "accountsChanthunkAPI.dispatch(getAllCampaigns());ged",
-        (newAccounts) => {
-          thunkAPI.dispatch(setAddress(newAccounts[0]));
-          localStorage.setItem(
-            "auth",
-            JSON.stringify({
-              addresses: newAccounts[0],
-            })
-          );
-        }
-      );
+      window.ethereum.on("accountsChanged", (newAccounts) => {
+        thunkAPI.dispatch(setAddress(newAccounts[0]));
+        localStorage.setItem(
+          "auth",
+          JSON.stringify({
+            addresses: newAccounts[0],
+          })
+        );
+      });
 
       return {
         web3,
@@ -77,20 +74,25 @@ export const updateCampaign = createAsyncThunk(
   }
 );
 
-export const backCampaign = createAsyncThunk(
+export const backACampaign = createAsyncThunk(
   "backCampaign",
   async (data, thunkAPI) => {
     const contract = thunkAPI.getState().nobietyReducer.contract;
     const address = thunkAPI.getState().nobietyReducer.address;
     const web3 = thunkAPI.getState().nobietyReducer.web3;
     const ethAmount = web3.utils.toWei(data.donation.toString(), "ether");
-    await contract.methods
-      .backCampaign(data.title, data.donation, Date.now())
-      .send({
-        from: address,
-        value: ethAmount,
-        gasLimit: 500000,
-      });
+    const options = {
+      timeZone: "Asia/Karachi",
+      hour12: false,
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+    const date = new Date();
+    const pst = date.toLocaleString("en-US", options);
+    await contract.methods.backCampaign(data.title, ethAmount, pst).send({
+      from: address,
+    });
     thunkAPI.dispatch(getAllCampaigns());
   }
 );
@@ -135,6 +137,15 @@ export const withdrawAmount = createAsyncThunk(
   }
 );
 
+export const getBackers = createAsyncThunk(
+  "getBackersList",
+  async (title, thunkAPI) => {
+    const contract = thunkAPI.getState().nobietyReducer.contract;
+    const backerList = await contract.methods.getBackers(title).call();
+    return backerList;
+  }
+);
+
 export const deleteCampaign = createAsyncThunk(
   "deleteCampaign",
   async (title, thunkAPI) => {
@@ -174,6 +185,7 @@ const nobietySlice = createSlice({
     address: null,
     allCampaignList: [],
     wallet: 0,
+    backerList: [],
   },
   reducers: {
     nobiety: () => {},
@@ -192,6 +204,9 @@ const nobietySlice = createSlice({
     },
     [walletAmount.fulfilled]: (state, action) => {
       state.wallet = action.payload / 1000000000000000000;
+    },
+    [getBackers.fulfilled]: (state, action) => {
+      state.backerList = action.payload;
     },
   },
 });

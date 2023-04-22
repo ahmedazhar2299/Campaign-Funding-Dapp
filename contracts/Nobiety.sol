@@ -64,12 +64,13 @@ contract Nobiety {
         emit withdrawAmount(msg.sender, _amount);
     }
 
-    function backCampaign(string memory _title,uint _donation,string memory _time) public payable {
-        require(isTitleExist(_title),"Invalid title provided");
+    function backCampaign(string memory _title,uint _donation,string memory _time) public {
+        require(isTitleExist(_title)==false,"Invalid title provided");
         Campaign storage currentCampaign = getCampaign(_title);
         require(msg.sender != currentCampaign.owner, "Owner cannot back his own campaign");
         require(balances[msg.sender] >= _donation, "Insufficient balance");
         balances[msg.sender] -= _donation;
+        _donation = _donation / 1000000000000000000;
         if (currentCampaign.raisedAmount+_donation >= currentCampaign.amount) {
             currentCampaign.raisedAmount = currentCampaign.amount;
         }
@@ -86,6 +87,7 @@ contract Nobiety {
             }
             emit backerCampagin(backer,_title);
     }
+    
 
     function sendFundsToOwner(string memory _title) public payable {
         Campaign storage currentCampaign = getCampaign(_title);
@@ -128,10 +130,10 @@ contract Nobiety {
        
         allCampaignList.push(newCampaign);
         emit launchCampagin(newCampaign);
-        
     }
 
     function updateCampaign(string memory _oldTitle, string memory _title, uint256 _amount, string memory _date, string memory _url, string memory _description) public {
+    require(isTitleExist(_title),"Cannot add a campagain with same name");
     for (uint256 i = 0; i < allCampaignList.length; i++) {
         Campaign storage currentCampaign = allCampaignList[i];
         if (keccak256(bytes(currentCampaign.title)) == keccak256(bytes(_oldTitle)) && currentCampaign.owner == msg.sender) {
