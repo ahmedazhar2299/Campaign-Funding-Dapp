@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button, Form, Input, DatePicker } from "rsuite";
 
-const CreateProject = ({ setOpen, setClose ,Operation }) => {
+const CreateProject = ({ setOpen, setClose, Operation }) => {
   const Textarea = React.forwardRef((props, ref) => (
     <Input {...props} as="textarea" ref={ref} />
   ));
@@ -10,7 +10,7 @@ const CreateProject = ({ setOpen, setClose ,Operation }) => {
     <Modal open={setOpen} onClose={setClose}>
       <Modal.Header>
         <Modal.Title className="text-center uppercase">
-          {Operation} Project
+          {Operation} Campaign
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -26,7 +26,7 @@ const CreateProject = ({ setOpen, setClose ,Operation }) => {
             </Form.Group>
             <Form.Group controlId="date">
               <Form.ControlLabel>Date</Form.ControlLabel>
-              <DatePicker format="yyyy-MM-dd HH:mm:ss" />
+              <DatePicker className="w-full" format="yyyy-MM-dd HH:mm:ss" />
             </Form.Group>
             <Form.Group controlId="url">
               <Form.ControlLabel>Image Url</Form.ControlLabel>

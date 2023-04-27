@@ -5,7 +5,7 @@ const BackProject = ({ setOpen, setClose }) => {
     <Modal open={setOpen} onClose={setClose}>
       <Modal.Header>
         <Modal.Title className="text-center uppercase">
-          Back Project
+          Back Campaign
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="flex flex-col gap-5">
@@ -16,7 +16,7 @@ const BackProject = ({ setOpen, setClose }) => {
           </Form.Group>
         </Form>
         <Button block onClick={setClose} color="green" appearance="primary">
-          Back Project
+          Back Campaign
         </Button>
       </Modal.Body>
     </Modal>

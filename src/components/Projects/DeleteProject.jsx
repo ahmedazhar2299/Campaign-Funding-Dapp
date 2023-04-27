@@ -5,7 +5,7 @@ const DeleteProject = ({ setOpen, setClose }) => {
     <Modal open={setOpen} onClose={setClose}>
       <Modal.Header>
         <Modal.Title className="text-center uppercase">
-          Delete Project
+          Delete Campaign
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>

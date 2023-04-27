@@ -24,7 +24,7 @@ const ProjectItem = (e) => {
       <div className="h-64 w-56 overflow-hidden rounded-lg">
         <img
           className="w-full h-full object-cover"
-          src="https://i.bloganchoi.com/bloganchoi.com/wp-content/uploads/2022/06/tac-pham-nft-2-696x344.jpg?fit=700%2C20000&quality=95&ssl=1"
+          src="https://storage.googleapis.com/afs-prod/media/197afa901c1e4170913edd14ec1801f0/400.jpeg"
           alt=""
         />
       </div>
@@ -37,7 +37,7 @@ const ProjectItem = (e) => {
         <div>
           <p className="text-sm">Expired</p>
           <div className="w-full bg-slate-300">
-            <div className="w-6/12 border-2 border-green-600 "></div>
+            <div className="w-6/12 border-2 border-green-500 "></div>
           </div>
           <div className="flex text-sm font-bold justify-between">
             <small>0.01 ETH Raised</small>
