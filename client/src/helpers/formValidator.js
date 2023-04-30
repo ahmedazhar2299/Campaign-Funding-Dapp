@@ -1,7 +1,7 @@
 import validator from "validator";
 
 const strValidate = (name) => {
-  return validator.isLength(name, { min: 4, max: 200 });
+  return validator.isLength(name, { min: 4 });
 };
 
 const urlValidate = (url) => {

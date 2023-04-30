@@ -30,7 +30,7 @@ contract Nobiety {
     function isNameExist(string memory title) public view returns(bool) {
      bool flag = true;
      for (uint256 i = 0; i < allCampaignList.length; i++) {
-        Campaign storage currentCampaign = allCampaignList[i];
+        Campaign storage currentCampaign = allCampaignList[i]; //shallow copy - pointing to actual position of currentCampaign 
         if (keccak256(bytes(currentCampaign.title)) == keccak256(bytes(title))) {
             flag = false;
             break;
