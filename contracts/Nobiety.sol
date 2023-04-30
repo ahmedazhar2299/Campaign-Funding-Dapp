@@ -10,7 +10,6 @@ contract Nobiety {
     struct Campaign{
         string title;
         uint256 amount;
-        string date;
         string url;
         string description;
         string status;
@@ -39,12 +38,11 @@ contract Nobiety {
     return flag;
 }
 
-   function addCampaign(string memory _title, uint256 _amount, string memory _date, string memory _url, string memory _description) public {
+   function addCampaign(string memory _title, uint256 _amount, string memory _url, string memory _description) public {
         require(isNameExist(_title),"Cannot add a campagain with same name");
         Campaign memory newCampaign = Campaign({
             title: _title,
             amount: _amount,
-            date: _date,
             url: _url,
             description: _description,
             status : "Live",
@@ -57,13 +55,12 @@ contract Nobiety {
         
     }
 
-    function updateCampaign(string memory _oldTitle, string memory _title, uint256 _amount, string memory _date, string memory _url, string memory _description) public {
+    function updateCampaign(string memory _oldTitle, string memory _title, uint256 _amount, string memory _url, string memory _description) public {
     for (uint256 i = 0; i < allCampaignList.length; i++) {
         Campaign storage currentCampaign = allCampaignList[i];
         if (keccak256(bytes(currentCampaign.title)) == keccak256(bytes(_oldTitle)) && currentCampaign.owner == msg.sender) {
             currentCampaign.title = _title;
             currentCampaign.amount = _amount;
-            currentCampaign.date = _date;
             currentCampaign.url = _url;
             currentCampaign.description = _description;
             emit updateCampagin(currentCampaign);

@@ -64,7 +64,6 @@ export const updateCampaign = createAsyncThunk(
         data.oldTitle,
         data.title,
         data.amount,
-        String(data.date),
         data.url,
         data.description
       )
@@ -93,13 +92,7 @@ export const addNewCampaign = createAsyncThunk(
     const contract = thunkAPI.getState().nobietyReducer.contract;
     const address = thunkAPI.getState().nobietyReducer.address;
     await contract.methods
-      .addCampaign(
-        data.title,
-        data.amount,
-        String(data.date),
-        data.url,
-        data.description
-      )
+      .addCampaign(data.title, data.amount, data.url, data.description)
       .send({
         from: address,
       });
