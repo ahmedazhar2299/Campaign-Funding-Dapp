@@ -74,6 +74,9 @@ contract Nobiety {
     uint remainingAmount = currentCampaign.amount - currentCampaign.raisedAmount;
     uint donationToAdd = donationInEther < remainingAmount ? donationInEther : remainingAmount;
     currentCampaign.raisedAmount += donationToAdd;
+    if(donationToAdd==remainingAmount){
+        currentCampaign.status = "Raised";
+    }
     balances[msg.sender] -= donationToAdd * 1 ether;
 
     Backer memory backer = Backer({
